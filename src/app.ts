@@ -6,6 +6,8 @@ import cors from "cors";
 import mongoose from "mongoose";
 import router from "./router";
 import morgan from "morgan";
+import dotenv from "dotenv";
+dotenv.config();
 const port = 4000;
 
 const app = express();
@@ -26,14 +28,13 @@ app.use(morgan("tiny"));
 app.use("/", router());
 
 const server = http.createServer(app);
-server.listen(port, () => console.log(`server started on port ${port}`));
-
-const MONGO_URL =
-  "mongodb+srv://smartrove:12345@node-tsc-api.lwdz80i.mongodb.net/?retryWrites=true&w=majority";
+server.listen(process.env.PORT as string, () =>
+  console.log(`server started on port ${port}`)
+);
 
 mongoose.Promise = Promise;
 mongoose
-  .connect(MONGO_URL)
+  .connect(process.env.MONGO_URL as string)
   .then(() => console.log("database connected successfully"))
   .catch((error) => {
     console.log(error.message);
